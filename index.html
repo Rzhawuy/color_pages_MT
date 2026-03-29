@@ -3,115 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetaTransfer Color Configurator</title>
+    <title>MetaTransfer Pro Configurator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Oswald:wght@700&family=Ruslan+Display&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #1a1a1a; /* Темный фон, чтоб цвета сочнее были */
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            background-color: #0f0f0f;
+            font-family: 'Montserrat', sans-serif;
             color: white;
+            overflow-x: hidden;
         }
 
+        /* Контейнер для логотипа - теперь адаптивный */
         .logo-container {
-            font-size: 80px;
-            font-weight: 800;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            user-select: none;
+            text-align: center;
+            margin-bottom: 40px;
+            word-wrap: break-word;
+            width: 100%;
+            max-width: 90vw;
+            line-height: 1.1;
         }
 
-        #part-meta {
-            color: #00ffcc; /* Дефолтный цвет для Meta */
-            transition: color 0.1s;
+        #part-meta, #part-transfer {
+            transition: all 0.2s ease;
+            display: inline-block;
         }
 
-        #part-transfer {
-            color: #ffffff; /* Дефолтный цвет для Transfer */
-            transition: color 0.1s;
-        }
-
+        /* Панель управления */
         .controls {
-            display: flex;
-            gap: 40px;
-            background: #2a2a2a;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #333;
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 10px;
         }
 
         label {
-            font-size: 14px;
-            font-weight: bold;
-            color: #aaa;
+            font-size: 12px;
+            color: #888;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
-            width: 60px;
-            height: 60px;
+        /* Красивые инпуты */
+        input[type="color"], select, input[type="range"] {
+            width: 100%;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
             cursor: pointer;
-            background: none;
         }
 
-        input[type="color"]::-webkit-color-swatch-wrapper {
+        input[type="range"] {
             padding: 0;
         }
 
-        input[type="color"]::-webkit-color-swatch {
-            border: 3px solid #444;
-            border-radius: 50%;
+        /* Адаптация под мобилки */
+        @media (max-width: 600px) {
+            .logo-container {
+                font-size: 40px !important; /* Уменьшаем базу для мобил */
+            }
+            .controls {
+                grid-template-columns: 1fr 1fr; /* По две колонки на мобиле */
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="logo-container">
+    <div class="logo-container" id="logo">
         <span id="part-meta">Meta</span><span id="part-transfer">Transfer</span>
     </div>
 
     <div class="controls">
         <div class="control-group">
-            <label for="color-meta">Цвет Meta</label>
+            <label>Цвет Meta</label>
             <input type="color" id="color-meta" value="#00ffcc">
         </div>
         
         <div class="control-group">
-            <label for="color-transfer">Цвет Transfer</label>
+            <label>Цвет Transfer</label>
             <input type="color" id="color-transfer" value="#ffffff">
+        </div>
+
+        <div class="control-group" style="grid-column: span 2;">
+            <label>Размер текста: <span id="size-val">80</span>px</label>
+            <input type="range" id="font-size" min="20" max="150" value="80">
+        </div>
+
+        <div class="control-group" style="grid-column: span 2;">
+            <label>Выбрать шрифт</label>
+            <select id="font-family">
+                <option value="'Montserrat', sans-serif">Montserrat (Современный)</option>
+                <option value="'Bebas Neue', cursive">Bebas Neue (Узкий/Высокий)</option>
+                <option value="'Oswald', sans-serif">Oswald (Строгий)</option>
+                <option value="'Ruslan Display', cursive">Ruslan (Стиль)</option>
+                <option value="'Impact', sans-serif">Impact (Жирный)</option>
+            </select>
         </div>
     </div>
 
     <script>
-        const metaSpan = document.getElementById('part-meta');
-        const transferSpan = document.getElementById('part-transfer');
-        const metaInput = document.getElementById('color-meta');
-        const transferInput = document.getElementById('color-transfer');
+        const meta = document.getElementById('part-meta');
+        const transfer = document.getElementById('part-transfer');
+        const logo = document.getElementById('logo');
+        
+        const cMeta = document.getElementById('color-meta');
+        const cTransfer = document.getElementById('color-transfer');
+        const fSize = document.getElementById('font-size');
+        const fFamily = document.getElementById('font-family');
+        const sizeVal = document.getElementById('size-val');
 
-        // Слушаем изменения цвета для Meta
-        metaInput.addEventListener('input', (e) => {
-            metaSpan.style.color = e.target.value;
+        // Цвет Meta
+        cMeta.addEventListener('input', (e) => meta.style.color = e.target.value);
+        
+        // Цвет Transfer
+        cTransfer.addEventListener('input', (e) => transfer.style.color = e.target.value);
+
+        // Размер шрифта
+        fSize.addEventListener('input', (e) => {
+            const val = e.target.value;
+            logo.style.fontSize = val + 'px';
+            sizeVal.innerText = val;
         });
 
-        // Слушаем изменения цвета для Transfer
-        transferInput.addEventListener('input', (e) => {
-            transferSpan.style.color = e.target.value;
+        // Смена шрифта
+        fFamily.addEventListener('change', (e) => {
+            logo.style.fontFamily = e.target.value;
         });
+
+        // Установка начального размера
+        logo.style.fontSize = fSize.value + 'px';
     </script>
 </body>
 </html>
