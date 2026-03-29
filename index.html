@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaTransfer Color Configurator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a; /* Темный фон, чтоб цвета сочнее были */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: white;
+        }
+
+        .logo-container {
+            font-size: 80px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            user-select: none;
+        }
+
+        #part-meta {
+            color: #00ffcc; /* Дефолтный цвет для Meta */
+            transition: color 0.1s;
+        }
+
+        #part-transfer {
+            color: #ffffff; /* Дефолтный цвет для Transfer */
+            transition: color 0.1s;
+        }
+
+        .controls {
+            display: flex;
+            gap: 40px;
+            background: #2a2a2a;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 3px solid #444;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <span id="part-meta">Meta</span><span id="part-transfer">Transfer</span>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label for="color-meta">Цвет Meta</label>
+            <input type="color" id="color-meta" value="#00ffcc">
+        </div>
+        
+        <div class="control-group">
+            <label for="color-transfer">Цвет Transfer</label>
+            <input type="color" id="color-transfer" value="#ffffff">
+        </div>
+    </div>
+
+    <script>
+        const metaSpan = document.getElementById('part-meta');
+        const transferSpan = document.getElementById('part-transfer');
+        const metaInput = document.getElementById('color-meta');
+        const transferInput = document.getElementById('color-transfer');
+
+        // Слушаем изменения цвета для Meta
+        metaInput.addEventListener('input', (e) => {
+            metaSpan.style.color = e.target.value;
+        });
+
+        // Слушаем изменения цвета для Transfer
+        transferInput.addEventListener('input', (e) => {
+            transferSpan.style.color = e.target.value;
+        });
+    </script>
+</body>
+</html>
