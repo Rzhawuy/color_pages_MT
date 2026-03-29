@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MetaTransfer Brand Tool</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Exo+2:wght@900&family=Montserrat:wght@900&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <title>MetaTransfer Brand Tool Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Exo+2:wght@900&family=Montserrat:wght@900&family=Orbitron:wght@900&family=Oswald:wght@700&family=Ruslan+Display&family=Stalinist+One&family=Russo+One&family=Unbounded:wght@900&family=Syncopate:wght@700&family=Michroma&family=Righteous&family=Press+Start+2P&family=Permanent+Marker&family=Monoton&family=Pacifico&family=Comfortaa:wght@700&family=Days+One&family=Black+Ops+One&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
-            --logo-size: 60px;
+            --logo-size: 70px;
+            --letter-spacing: 0px;
             --main-accent: #00ffcc;
         }
 
@@ -17,91 +18,110 @@
             margin: 0; padding: 10px;
             display: flex; flex-direction: column;
             min-height: 100vh;
-            background-color: #080808;
+            background-color: #050505;
             color: white;
             font-family: 'Montserrat', sans-serif;
             -webkit-text-size-adjust: 100%;
+            overflow-x: hidden;
         }
 
         .logo-wrapper {
             flex-grow: 1;
             display: flex; justify-content: center; align-items: center;
             padding: 40px 20px;
-            background: radial-gradient(circle, #1a1a1a 0%, #080808 100%);
-            border-radius: 20px;
+            background: radial-gradient(circle, #151515 0%, #050505 100%);
+            border-radius: 24px;
             margin-bottom: 10px;
+            min-height: 250px;
         }
 
         .logo-container {
             font-size: var(--logo-size) !important; 
-            line-height: 1;
+            letter-spacing: var(--letter-spacing) !important;
+            line-height: 1.1;
+            text-align: center;
             transition: font-family 0.3s ease;
             user-select: none;
+            word-wrap: break-word;
+            width: 100%;
         }
 
+        #part-meta { font-weight: 900; }
+
         .controls {
-            background: #141414;
+            background: #111111;
             padding: 20px;
-            border-radius: 25px;
+            border-radius: 28px;
             width: 100%; max-width: 500px;
             margin: 0 auto;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
             border: 1px solid #222;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
 
         .full-width { grid-column: span 2; }
 
-        /* Красивые кнопки */
-        .btn-neon {
-            background: none;
-            border: 2px solid var(--main-accent);
-            color: var(--main-accent);
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-neon:active {
-            background: var(--main-accent);
-            color: #000;
-            box-shadow: 0 0 20px var(--main-accent);
-        }
-
-        /* Блок информации */
-        #brand-info {
-            display: none;
-            padding: 15px;
-            background: #1a1a1a;
-            border-radius: 15px;
-            margin-top: 10px;
-            font-size: 13px;
-            border-left: 4px solid var(--main-accent);
+        label {
+            font-size: 10px; color: #666;
+            text-transform: uppercase; letter-spacing: 1px;
+            display: block; margin-bottom: 5px;
         }
 
         input[type="color"], select {
-            width: 100%; height: 45px;
-            background: #202020; border: 1px solid #333;
-            color: white; border-radius: 12px;
+            width: 100%; height: 48px;
+            background: #1a1a1a; border: 1px solid #333;
+            color: white; border-radius: 14px;
+            padding: 5px; cursor: pointer;
+        }
+
+        input[type="range"] {
+            width: 100%; height: 20px;
+            accent-color: var(--main-accent);
+            cursor: pointer;
+        }
+
+        .btn-group {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            margin-top: 5px;
+        }
+
+        .btn-neon {
+            background: none; border: 2px solid var(--main-accent);
+            color: var(--main-accent); padding: 12px;
+            border-radius: 14px; font-weight: 900;
+            text-transform: uppercase; font-size: 11px;
+            cursor: pointer; transition: 0.2s;
+        }
+
+        .btn-neon:active {
+            background: var(--main-accent); color: #000;
+            box-shadow: 0 0 15px var(--main-accent);
         }
 
         .download-btn {
-            background: var(--main-accent);
-            color: #000;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 900;
-            grid-column: span 2;
+            background: var(--main-accent); color: #000;
+            border: none; padding: 16px;
+            border-radius: 14px; font-weight: 900;
+            font-size: 14px; cursor: pointer;
+            margin-top: 5px;
+        }
+
+        #brand-info {
+            display: none; padding: 15px;
+            background: #1a1a1a; border-radius: 15px;
+            font-size: 12px; color: #ccc;
+            border-left: 4px solid var(--main-accent);
+        }
+
+        @media (max-width: 480px) {
+            .logo-container { font-size: calc(var(--logo-size) * 0.7) !important; }
         }
     </style>
 </head>
 <body>
 
     <div class="logo-wrapper">
-        <div id="capture" style="padding: 20px;">
+        <div id="capture" style="padding: 30px; display: inline-block;">
             <div class="logo-container" id="logo">
                 <span id="part-meta">Meta</span><span id="part-transfer">Transfer</span>
             </div>
@@ -110,32 +130,63 @@
 
     <div class="controls">
         <div class="control-group">
-            <label style="font-size: 10px; color: #888;">META COLOR</label>
+            <label>META COLOR</label>
             <input type="color" id="color-meta" value="#00ffcc">
         </div>
         <div class="control-group">
-            <label style="font-size: 10px; color: #888;">TRANSFER COLOR</label>
+            <label>TRANS COLOR</label>
             <input type="color" id="color-transfer" value="#ffffff">
         </div>
 
         <div class="full-width">
+            <label>РАЗМЕР: <span id="size-val">70</span>px</label>
+            <input type="range" id="font-size" min="20" max="150" value="70">
+        </div>
+
+        <div class="full-width">
+            <label>ИНТЕРВАЛ: <span id="spacing-val">0</span>px</label>
+            <input type="range" id="letter-spacing" min="-10" max="30" value="0">
+        </div>
+
+        <div class="full-width">
+            <label>ШРИФТ БРЕНДА</label>
             <select id="font-family">
-                <option value="'Montserrat'">Montserrat</option>
-                <option value="'Anton'">Anton</option>
-                <option value="'Orbitron'">Orbitron</option>
-                <option value="'Bebas Neue'">Bebas Neue</option>
+                <optgroup label="Брендовые / Жирные">
+                    <option value="'Montserrat'">Montserrat (Modern)</option>
+                    <option value="'Anton'">Anton (Nike Style)</option>
+                    <option value="'Unbounded'">Unbounded (Cyber)</option>
+                    <option value="'Bebas Neue'">Bebas Neue (Adidas)</option>
+                    <option value="'Days One'">Days One (Heavy)</option>
+                </optgroup>
+                <optgroup label="Техно / Футуризм">
+                    <option value="'Orbitron'">Orbitron (Tesla)</option>
+                    <option value="'Syncopate'">Syncopate (Luxury)</option>
+                    <option value="'Michroma'">Michroma (Clean Tech)</option>
+                    <option value="'Stalinist One'">Stalinist (Industrial)</option>
+                    <option value="'Black Ops One'">Black Ops (Military)</option>
+                </optgroup>
+                <optgroup label="Дизайнерские">
+                    <option value="'Righteous'">Righteous (80s)</option>
+                    <option value="'Russo One'">Russo One (Sport)</option>
+                    <option value="'Permanent Marker'">Marker (Street)</option>
+                    <option value="'Monoton'">Monoton (Retro)</option>
+                    <option value="'Press Start 2P'">8-Bit (Pixel)</option>
+                </optgroup>
             </select>
         </div>
 
-        <button class="btn-neon" onclick="toggleInfo()">О Бренде</button>
-        <button class="btn-neon" onclick="randomColor()">Рандом</button>
+        <div class="full-width btn-group">
+            <button class="btn-neon" onclick="toggleInfo()">Инфо</button>
+            <button class="btn-neon" onclick="randomColor()">Рандом</button>
+        </div>
 
-        <button class="download-btn" id="download-btn">СКАЧАТЬ PNG</button>
+        <button class="download-btn full-width" id="download-btn">СКАЧАТЬ ЛОГОТИП (PNG)</button>
 
         <div id="brand-info" class="full-width">
-            <strong>MetaTransfer v1.0</strong><br>
-            Инструмент для создания уникального стиля. <br>
-            Выбирай цвета, подбирай шрифты и качай лого в один клик.
+            <strong>METATRANSFER BRAND TOOL</strong><br>
+            • Управляй цветом каждой части.<br>
+            • 25+ профессиональных шрифтов.<br>
+            • Скачивание в высоком качестве 3x.
         </div>
     </div>
 
@@ -144,17 +195,29 @@
         const meta = document.getElementById('part-meta');
         const transfer = document.getElementById('part-transfer');
         const logo = document.getElementById('logo');
+        
         const cMeta = document.getElementById('color-meta');
         const cTransfer = document.getElementById('color-transfer');
+        const fSize = document.getElementById('font-size');
+        const lSpacing = document.getElementById('letter-spacing');
         const fFamily = document.getElementById('font-family');
+        
+        const sizeVal = document.getElementById('size-val');
+        const spacingVal = document.getElementById('spacing-val');
         const downloadBtn = document.getElementById('download-btn');
 
         function updateAll() {
             meta.style.color = cMeta.value;
             transfer.style.color = cTransfer.value;
+            root.style.setProperty('--logo-size', fSize.value + 'px');
+            root.style.setProperty('--letter-spacing', lSpacing.value + 'px');
             logo.style.fontFamily = fFamily.value;
+            sizeVal.innerText = fSize.value;
+            spacingVal.innerText = lSpacing.value;
         }
 
+        fSize.oninput = updateAll;
+        lSpacing.oninput = updateAll;
         cMeta.oninput = updateAll;
         cTransfer.oninput = updateAll;
         fFamily.onchange = updateAll;
@@ -165,30 +228,34 @@
         }
 
         function randomColor() {
-            const rand = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-            cMeta.value = rand();
-            cTransfer.value = rand();
+            const r = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            cMeta.value = r();
+            cTransfer.value = r();
             updateAll();
         }
 
-        // КОРРЕКТНОЕ СКАЧИВАНИЕ
         downloadBtn.onclick = () => {
-            downloadBtn.innerText = "ГЕНЕРАЦИЯ...";
+            downloadBtn.innerText = "ПОДОЖДИ...";
             html2canvas(document.getElementById('capture'), {
                 backgroundColor: null,
-                scale: 3
+                scale: 3,
+                useCORS: true
             }).then(canvas => {
                 canvas.toBlob((blob) => {
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
-                    link.download = `Logo_${Date.now()}.png`;
+                    link.download = `MetaTransfer_${Date.now()}.png`;
                     link.href = url;
+                    document.body.appendChild(link);
                     link.click();
+                    document.body.removeChild(link);
                     URL.revokeObjectURL(url);
-                    downloadBtn.innerText = "СКАЧАТЬ PNG";
-                });
+                    downloadBtn.innerText = "СКАЧАТЬ ЛОГОТИП (PNG)";
+                }, 'image/png');
             });
         };
+
+        updateAll();
     </script>
 </body>
 </html>
