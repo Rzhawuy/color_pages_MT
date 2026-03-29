@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MetaTransfer Mobile Fixed</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Exo+2:wght@900&family=Montserrat:wght@900&family=Orbitron:wght@900&family=Oswald:wght@700&family=Syncopate:wght@700&family=Russo+One&family=Stalinist+One&display=swap" rel="stylesheet">
+    <title>MetaTransfer Brand Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Exo+2:wght@900&family=Montserrat:wght@900&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         :root {
-            --logo-size: 70px; /* Переменная для размера */
+            --logo-size: 60px;
+            --main-accent: #00ffcc;
         }
 
         body {
@@ -16,41 +20,52 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #050505;
+            background-color: #080808;
             color: white;
             font-family: 'Montserrat', sans-serif;
-            /* Запрещаем браузеру самому менять размер шрифта */
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
             overflow-x: hidden;
+            box-sizing: border-box;
         }
 
+        /* Область логотипа (теперь с фоном для скачивания) */
         .logo-wrapper {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
+            background: radial-gradient(circle, #1a1a1a 0%, #080808 100%);
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Контейнер, который мы будем "фоткать" */
+        .logo-capture-area {
+            display: inline-block;
+            padding: 20px;
+            /* Фон должен быть прозрачным для скачивания без фона, 
+               но мы добавим его в скрипте */
         }
 
         .logo-container {
-            /* Используем переменную для размера */
             font-size: var(--logo-size) !important; 
             line-height: 1;
             width: 100%;
             word-wrap: break-word;
             transition: font-family 0.3s ease;
+            user-select: none;
         }
 
-        #part-meta, #part-transfer {
-            display: inline-block;
-        }
+        #part-meta, #part-transfer { display: inline-block; }
 
+        /* Панель управления (как снизу) */
         .controls {
-            background: #1a1a1a;
+            background: #141414;
             padding: 20px;
-            border-radius: 25px 25px 0 0; /* Скругляем верх для мобил */
+            border-radius: 25px 25px 10px 10px;
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
@@ -58,44 +73,81 @@
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             box-sizing: border-box;
-            border-top: 1px solid #333;
+            border: 1px solid #222;
         }
 
         .full-width { grid-column: span 2; }
 
         label {
             font-size: 10px;
-            color: #888;
+            color: #aaa;
             text-transform: uppercase;
-            display: block;
+            letter-spacing: 1px;
             margin-bottom: 5px;
+            display: block;
         }
 
         input[type="range"] {
             width: 100%;
-            height: 25px; /* Увеличили область нажатия для пальца */
-            accent-color: #00ffcc;
+            height: 25px;
+            accent-color: var(--main-accent);
+            cursor: pointer;
         }
 
         input[type="color"], select {
             width: 100%;
             height: 45px;
-            background: #252525;
-            border: 1px solid #444;
+            background: #202020;
+            border: 1px solid #333;
             color: white;
             border-radius: 12px;
             padding: 5px;
+            font-size: 14px;
+            cursor: pointer;
         }
 
-        /* Чтобы на мобиле при тапе не было синей рамки */
-        * { -webkit-tap-highlight-color: transparent; }
+        /* === КНОПКА СКАЧИВАНИЯ === */
+        .download-section {
+            grid-column: span 2;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .btn-download {
+            background-color: var(--main-accent);
+            color: #080808;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.2);
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 8px 20px rgba(0, 255, 204, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-download:active {
+            transform: translateY(1px);
+        }
+
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box;}
     </style>
 </head>
 <body>
 
     <div class="logo-wrapper">
-        <div class="logo-container" id="logo">
-            <span id="part-meta">Meta</span><span id="part-transfer">Transfer</span>
+        <div class="logo-capture-area" id="capture">
+            <div class="logo-container" id="logo">
+                <span id="part-meta">Meta</span><span id="part-transfer">Transfer</span>
+            </div>
         </div>
     </div>
 
@@ -111,25 +163,27 @@
         </div>
 
         <div class="control-group full-width">
-            <label>Размер: <span id="size-val">70</span>px</label>
-            <input type="range" id="font-size" min="20" max="150" value="70" style="touch-action: none;">
+            <label>Размер: <span id="size-val">60</span>px</label>
+            <input type="range" id="font-size" min="20" max="150" value="60" style="touch-action: none;">
         </div>
 
         <div class="control-group full-width">
             <label>Выбрать шрифт</label>
             <select id="font-family">
                 <option value="'Montserrat'">Montserrat</option>
-                <option value="'Anton'">Anton (Nike style)</option>
-                <option value="'Orbitron'">Orbitron (Tesla style)</option>
+                <option value="'Anton'">Anton</option>
+                <option value="'Orbitron'">Orbitron</option>
                 <option value="'Bebas Neue'">Bebas Neue</option>
-                <option value="'Syncopate'">Syncopate (Luxury)</option>
-                <option value="'Stalinist One'">Stalinist (Heavy)</option>
-                <option value="'Russo One'">Russo One</option>
             </select>
+        </div>
+
+        <div class="download-section">
+            <button class="btn-download" id="download-btn">Скачать PNG (Прозрачный)</button>
         </div>
     </div>
 
     <script>
+        // --- БАЗОВАЯ ЛОГИКА (Цвета/Размер) ---
         const root = document.querySelector(':root');
         const meta = document.getElementById('part-meta');
         const transfer = document.getElementById('part-transfer');
@@ -144,19 +198,48 @@
         function updateAll() {
             meta.style.color = cMeta.value;
             transfer.style.color = cTransfer.value;
-            // Меняем через CSS переменную — это работает на мобилах стабильнее
             root.style.setProperty('--logo-size', fSize.value + 'px');
             logo.style.fontFamily = fFamily.value;
             sizeVal.innerText = fSize.value;
         }
 
-        // Слушаем и input (для плавности) и change (для фиксации)
         fSize.addEventListener('input', updateAll);
         cMeta.addEventListener('input', updateAll);
         cTransfer.addEventListener('input', updateAll);
         fFamily.addEventListener('change', updateAll);
 
-        updateAll();
+        updateAll(); // Старт
+
+        // --- ЛОГИКА СКАЧИВАНИЯ ---
+        const downloadBtn = document.getElementById('download-btn');
+        const captureArea = document.getElementById('capture');
+
+        downloadBtn.addEventListener('click', () => {
+            // Анимация кнопки при клике
+            downloadBtn.innerText = "Генерирую...";
+            downloadBtn.style.opacity = "0.7";
+
+            // Используем библиотеку html2canvas
+            html2canvas(captureArea, {
+                backgroundColor: null, // Прозрачный фон
+                scale: 2, // Удваиваем разрешение для качества
+                logging: false,
+                useCORS: true // Для корректной загрузки шрифтов
+            }).then(canvas => {
+                // Превращаем canvas в ссылку на картинку
+                const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                
+                // Создаем невидимую ссылку для скачивания
+                const link = document.createElement('a');
+                link.download = `MetaTransfer-${cMeta.value}-${cTransfer.value}.png`;
+                link.href = image;
+                link.click();
+
+                // Возвращаем кнопку в норму
+                downloadBtn.innerText = "Скачать PNG (Прозрачный)";
+                downloadBtn.style.opacity = "1";
+            });
+        });
     </script>
 </body>
 </html>
